@@ -33,7 +33,8 @@ def login(_user, password):
     """
     登录
     """
-    url1 = "https://api-user.huami.com/registrations/+86" + _user + "/tokens"
+    third_name = "email" if _user.find("@") > 0 else "huami_phone"
+    url1 = "https://api-user.huami.com/registrations/+86" +_user + "/tokens" if _user.find("@") < 0 else "https://api-user.huami.com/registrations/" +_user + "/tokens"
     _headers = {
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         "User-Agent": "MiFit/4.6.0 (iPhone; iOS 14.0.1; Scale/2.00)"
@@ -62,7 +63,7 @@ def login(_user, password):
         "device_id": "2C8B4939-0CCD-4E94-8CBA-CB8EA6E613A1",
         "device_model": "phone",
         "grant_type": "access_token",
-        "third_name": "huami_phone",
+        "third_name": f"{third_name}",
     }
     r2 = requests.post(url2, data=data2, headers=_headers).json()
     login_token = r2["token_info"]["login_token"]
